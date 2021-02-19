@@ -1,0 +1,267 @@
+openapi: 3.0.0
+info:
+  title: Facility Management System API
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  'api/users/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Get User Info by User ID
+      tags: []
+      responses:
+        '200':
+          description: User Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                Get User Alice Smith:
+                  value:
+                    id: 142
+                    firstName: Alice
+                    lastName: Smith
+                    email: alice.smith@gmail.com
+                    dateOfBirth: '1997-10-31'
+                    emailVerified: true
+                    signUpDate: '2019-08-24'
+            application/xml:
+              schema:
+                type: object
+                properties: {}
+            multipart/form-data:
+              schema:
+                type: object
+                properties:
+                  ID:
+                    type: string
+                  Name:
+                    type: string
+                  Role:
+                    type: string
+                  Status:
+                    type: string
+                  Email:
+                    type: string
+                  Birthday:
+                    type: string
+                  Phone:
+                    type: number
+                  Address:
+                    type: string
+                  Gender:
+                    type: string
+        '404':
+          description: User Not Found
+      operationId: get-users-userId
+      description: Retrieve the information of the user with the matching user ID.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+        description: ''
+    put:
+      summary: ''
+      operationId: putapi-users-id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        '400':
+          description: Bad Request
+      description: Update user information
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ID:
+                  type: string
+                Name:
+                  type: string
+                RoleID:
+                  type: string
+                Status:
+                  type: string
+                Email:
+                  type: string
+                Birthday:
+                  type: string
+                Phone:
+                  type: number
+                Address:
+                  type: string
+                Gender:
+                  type: string
+  api/users:
+    post:
+      summary: Create New User
+      operationId: post-user
+      responses:
+        '200':
+          description: User Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                New User Bob Fellow:
+                  value:
+                    id: 12
+                    firstName: Bob
+                    lastName: Fellow
+                    email: bob.fellow@gmail.com
+                    dateOfBirth: '1996-08-24'
+                    emailVerified: false
+                    createDate: '2020-11-18'
+        '400':
+          description: Bad Request
+        '409':
+          description: Conflict
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ID:
+                  type: string
+                Name:
+                  type: string
+                Phone:
+                  type: string
+                RoleID:
+                  type: string
+                  format: date
+                Email:
+                  type: string
+                Birthday:
+                  type: string
+                Address:
+                  type: string
+                Gender:
+                  type: string
+            examples:
+              Create User Bob Fellow:
+                value:
+                  firstName: Bob
+                  lastName: Fellow
+                  email: bob.fellow@gmail.com
+                  dateOfBirth: '1996-08-24'
+        description: Post the necessary fields for the API to create a new user.
+      description: Create a new user.
+    get:
+      summary: ''
+      operationId: get-user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    ID:
+                      type: string
+                    Name:
+                      type: string
+                    Role:
+                      type: string
+                    Status:
+                      type: string
+                    Email:
+                      type: string
+              examples:
+                example-1:
+                  value:
+                    - ID: string
+                      Name: string
+                      Role: string
+                      Status: string
+                      Email: string
+      description: Get list of all user in system
+      parameters:
+        - schema:
+            type: string
+          in: query
+    parameters: []
+    put:
+      summary: ''
+      operationId: putapi-users
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            examples: {}
+components:
+  schemas:
+    User:
+      title: User
+      type: object
+      description: ''
+      x-examples:
+        Alice Smith:
+          id: 142
+          firstName: Alice
+          lastName: Smith
+          email: alice.smith@gmail.com
+          dateOfBirth: '1997-10-31'
+          emailVerified: true
+          signUpDate: '2019-08-24'
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the given user.
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        dateOfBirth:
+          type: string
+          format: date
+          example: '1997-10-31'
+        emailVerified:
+          type: boolean
+          description: Set to true if the user's email has been verified.
+        createDate:
+          type: string
+          format: date
+          description: The date that the user was created.
+      required:
+        - id
+        - firstName
+        - lastName
+        - email
+        - emailVerified
+  responses:
+    '200':
+      description: Example response
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
